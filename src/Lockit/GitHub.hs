@@ -1,3 +1,5 @@
+{-# LANGUAGE UndecidableInstances #-}
+
 module Lockit.GitHub
     ( Issue(..)
     , mkIssueId
@@ -6,6 +8,10 @@ module Lockit.GitHub
 
     -- * Effects
     , MonadGitHub(..)
+
+    -- * Implementations
+    , HasGitHubAuth(..)
+    , ActualGitHub(..)
 
     -- * Re-exports
     , Id
@@ -18,8 +24,8 @@ module Lockit.GitHub
 
 import RIO
 
+import GitHub hiding (Issue(..))
 import qualified GitHub
-import GitHub.Data hiding (Issue(..))
 import Lockit.Time
 import qualified RIO.Vector as V
 
@@ -58,3 +64,34 @@ fromIssuesResponse = V.toList . fmap fromIssue
 class Monad m => MonadGitHub m where
     fetchClosedIssues :: Name Owner -> Name Repo -> m [Issue]
     lockIssue :: Issue -> m ()
+
+class HasGitHubAuth env where
+    githubAuthL :: Lens' env GitHub.Auth
+
+instance HasGitHubAuth GitHub.Auth where
+    githubAuthL = id
+
+newtype ActualGitHub m a = ActualGitHub
+    { unActualGitHub :: m a
+    }
+    deriving
+        ( Functor
+        , Applicative
+        , Monad
+        , MonadIO
+        , MonadReader env
+        )
+
+instance (MonadIO m, MonadReader env m, HasGitHubAuth env, HasLogFunc env)
+    => MonadGitHub (ActualGitHub m) where
+    fetchClosedIssues org repo = do
+        auth <- view githubAuthL
+        result <- liftIO $ github auth $ issuesForRepoR
+            org
+            repo
+            stateClosed
+            FetchAll
+        either throwIO (pure . fromIssuesResponse) result
+
+    -- Haskell github package lacks API
+    lockIssue issue = logInfo $ "Locking Issue: " <> display issue

@@ -20,6 +20,9 @@ data App = App
 instance HasLogFunc App where
     logFuncL = lens appLogFunc $ \x y -> x { appLogFunc = y }
 
+instance HasGitHubAuth App where
+    githubAuthL = lens appGitHubAuth $ \x y -> x { appGitHubAuth = y }
+
 loadApp :: LogFunc -> IO App
 loadApp lf = do
     token <- getEnv "GITHUB_TOKEN"
@@ -35,19 +38,7 @@ newtype AppT m a = AppT
         , MonadIO
         , MonadReader App
         )
-
-instance MonadIO m => MonadGitHub (AppT m) where
-    fetchClosedIssues org repo = do
-        auth <- asks appGitHubAuth
-        result <- liftIO $ github auth $ issuesForRepoR
-            org
-            repo
-            stateClosed
-            FetchAll
-        either throwIO (pure . fromIssuesResponse) result
-
-    -- Haskell github package lacks API
-    lockIssue issue = logInfo $ "Locking Issue: " <> display issue
+    deriving MonadGitHub via ActualGitHub (AppT m)
 
 runAppT :: App -> AppT m a -> m a
 runAppT app f = runReaderT (unAppT f) app

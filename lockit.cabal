@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d953cae4c6ac264ea9dd9e60f42b7d6a5cb5426ccc8719cefe1719c20954fdc5
+-- hash: 2027952172fc2f0fd58598d7c1d034254706b564f0f79f5b202b0fd387239da6
 
 name:           lockit
 version:        0.0.0.0
@@ -22,7 +22,7 @@ library
       Paths_lockit
   hs-source-dirs:
       src
-  default-extensions: DerivingStrategies GeneralizedNewtypeDeriving NoImplicitPrelude OverloadedStrings
+  default-extensions: DerivingStrategies DerivingVia GeneralizedNewtypeDeriving NoImplicitPrelude OverloadedStrings
   build-depends:
       base
     , bytestring
@@ -36,7 +36,7 @@ executable lockit
       Paths_lockit
   hs-source-dirs:
       app
-  default-extensions: DerivingStrategies GeneralizedNewtypeDeriving NoImplicitPrelude OverloadedStrings
+  default-extensions: DerivingStrategies DerivingVia GeneralizedNewtypeDeriving NoImplicitPrelude OverloadedStrings
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base
@@ -53,7 +53,7 @@ test-suite spec
       Paths_lockit
   hs-source-dirs:
       test
-  default-extensions: DerivingStrategies GeneralizedNewtypeDeriving NoImplicitPrelude OverloadedStrings
+  default-extensions: DerivingStrategies DerivingVia GeneralizedNewtypeDeriving NoImplicitPrelude OverloadedStrings
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base

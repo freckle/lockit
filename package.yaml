@@ -35,6 +35,7 @@ tests:
     source-dirs: test
     dependencies:
       - hspec
+      - lens
       - lockit
       - mtl
       - time

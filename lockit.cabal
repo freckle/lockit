@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2027952172fc2f0fd58598d7c1d034254706b564f0f79f5b202b0fd387239da6
+-- hash: 1e2038b623fccd1743e7c841aed5318db46673e6ae3c6046e60917af66c0ba14
 
 name:           lockit
 version:        0.0.0.0
@@ -58,6 +58,7 @@ test-suite spec
   build-depends:
       base
     , hspec
+    , lens
     , lockit
     , mtl
     , rio

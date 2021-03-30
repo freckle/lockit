@@ -18,14 +18,9 @@ newtype TestAppT m a = TestAppT
         ( Functor
         , Applicative
         , Monad
-        , MonadIO
         , MonadState IssueMap
         )
-
-instance Monad m => MonadGitHub (TestAppT m) where
-    fetchClosedIssues _ _ = gets issueMapIssues
-    lockIssue issueToLock = modify $ issueMapUpdate $ \issue ->
-        if issue == issueToLock then issue { issueLocked = True } else issue
+    deriving MonadGitHub via (MockGitHubIssues (TestAppT m))
 
 runTestAppT :: Monad m => IssueMap -> TestAppT m a -> m a
 runTestAppT issues f = evalStateT (unTestAppT f) issues

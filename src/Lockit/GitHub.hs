@@ -28,9 +28,13 @@ data Issue = Issue
     , issueLocked :: Bool
     , issueClosedAt :: Maybe UTCTime
     }
+    deriving stock Show
 
 instance Eq Issue where
     (==) = (==) `on` issueId
+
+instance Display Issue where
+    display = displayShow
 
 mkIssueId :: Int -> Id Issue
 mkIssueId = mkId Proxy

@@ -42,7 +42,8 @@ instance MonadIO m => MonadGitHub (AppT m) where
             FetchAll
         either throwIO (pure . fromIssuesResponse) result
 
-    lockIssue _ = pure () -- github package lacks API
+    -- Haskell github package lacks API
+    lockIssue issue = logInfo $ "Locking Issue: " <> display issue
 
 runAppT :: App -> AppT m a -> m a
 runAppT app f = runReaderT (unAppT f) app

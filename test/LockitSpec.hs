@@ -22,6 +22,11 @@ newtype TestAppT m a = TestAppT
         , MonadState IssueMap
         )
 
+instance Monad m => MonadGitHub (TestAppT m) where
+    fetchClosedIssues _ _ = gets issueMapIssues
+    lockIssue issueToLock = modify $ issueMapUpdate $ \issue ->
+        if issue == issueToLock then issue { issueLocked = True } else issue
+
 runTestAppT :: Monad m => IssueMap -> TestAppT m a -> m a
 runTestAppT issues f = evalStateT (unTestAppT f) issues
 

@@ -4,8 +4,7 @@ module Lockit.GitHub
     , issueIsFresh
 
     -- * Effects
-    , fetchClosedIssues
-    , lockIssue
+    , MonadGitHub(..)
 
     -- * Re-exports
     , Id
@@ -39,9 +38,6 @@ issueIsFresh cutoff issue
     | Just closed <- issueClosedAt issue, closed > cutoff = False
     | otherwise = True
 
-fetchClosedIssues
-    :: Applicative m => Name Owner -> Name Repo -> m [Issue]
-fetchClosedIssues _ _ = pure []
-
-lockIssue :: Applicative m => Issue -> m ()
-lockIssue _ = pure ()
+class Monad m => MonadGitHub m where
+    fetchClosedIssues :: Name Owner -> Name Repo -> m [Issue]
+    lockIssue :: Issue -> m ()

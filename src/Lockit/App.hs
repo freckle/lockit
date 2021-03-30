@@ -9,6 +9,7 @@ import RIO
 
 import qualified Data.ByteString.Char8 as BS8
 import GitHub
+import Lockit.GitHub
 import System.Environment
 
 newtype App = App
@@ -30,6 +31,18 @@ newtype AppT m a = AppT
         , MonadIO
         , MonadReader App
         )
+
+instance MonadIO m => MonadGitHub (AppT m) where
+    fetchClosedIssues org repo = do
+        auth <- asks appGitHubAuth
+        result <- liftIO $ github auth $ issuesForRepoR
+            org
+            repo
+            stateClosed
+            FetchAll
+        either throwIO (pure . fromIssuesResponse) result
+
+    lockIssue _ = pure () -- github package lacks API
 
 runAppT :: App -> AppT m a -> m a
 runAppT app f = runReaderT (unAppT f) app

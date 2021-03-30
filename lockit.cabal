@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6c17d3af3f81bf41b001a327afee606b05e6c5c5cea78e1e310d169be775857e
+-- hash: d953cae4c6ac264ea9dd9e60f42b7d6a5cb5426ccc8719cefe1719c20954fdc5
 
 name:           lockit
 version:        0.0.0.0

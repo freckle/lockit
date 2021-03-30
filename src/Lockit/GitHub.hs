@@ -35,7 +35,7 @@ mkIssueId = mkId Proxy
 issueIsFresh :: UTCTime -> Issue -> Bool
 issueIsFresh cutoff issue
     | issueLocked issue = False
-    | Just closed <- issueClosedAt issue, closed > cutoff = False
+    | Just closed <- issueClosedAt issue, closed <= cutoff = False
     | otherwise = True
 
 class Monad m => MonadGitHub m where

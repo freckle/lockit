@@ -13,4 +13,7 @@ newtype Days = Days
     }
 
 subtractDays :: Days -> UTCTime -> UTCTime
-subtractDays = undefined
+subtractDays d = addUTCTime (negate seconds)
+  where
+    seconds = fromIntegral (unDays d) * secondsPerDay
+    secondsPerDay = 24 * 60 * 60

@@ -24,7 +24,7 @@ data Issue = Issue
 issueIsFresh :: UTCTime -> Issue -> Bool
 issueIsFresh = undefined
 
-fetchClosedIssues :: Name Organization -> Name Repo -> m [Issue]
+fetchClosedIssues :: Name Owner -> Name Repo -> m [Issue]
 fetchClosedIssues = undefined
 
 lockIssue :: Issue -> m ()

@@ -32,6 +32,7 @@ tests:
     dependencies:
       - hspec
       - lockit
+      - time
     ghc-options:
       - -threaded
       - -rtsopts

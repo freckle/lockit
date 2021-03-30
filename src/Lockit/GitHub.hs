@@ -20,12 +20,19 @@ import GitHub.Data hiding (Issue(..))
 import Lockit.Time
 
 data Issue = Issue
+    { issueLocked :: Bool
+    , issueClosedAt :: Maybe UTCTime
+    }
 
 issueIsFresh :: UTCTime -> Issue -> Bool
-issueIsFresh = undefined
+issueIsFresh cutoff issue
+    | issueLocked issue = False
+    | Just closed <- issueClosedAt issue, closed > cutoff = False
+    | otherwise = True
 
-fetchClosedIssues :: Name Owner -> Name Repo -> m [Issue]
-fetchClosedIssues = undefined
+fetchClosedIssues
+    :: Applicative m => Name Owner -> Name Repo -> m [Issue]
+fetchClosedIssues _ _ = pure []
 
-lockIssue :: Issue -> m ()
-lockIssue = undefined
+lockIssue :: Applicative m => Issue -> m ()
+lockIssue _ = pure ()

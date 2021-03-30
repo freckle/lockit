@@ -2,6 +2,8 @@ name: lockit
 version: 0.0.0.0
 
 default-extensions:
+  - DerivingStrategies
+  - GeneralizedNewtypeDeriving
   - NoImplicitPrelude
   - OverloadedStrings
 
@@ -32,6 +34,7 @@ tests:
     dependencies:
       - hspec
       - lockit
+      - mtl
       - time
     ghc-options:
       - -threaded

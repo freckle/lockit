@@ -1,5 +1,6 @@
 module Lockit.GitHub
     ( Issue(..)
+    , mkIssueId
     , issueIsFresh
 
     -- * Effects
@@ -7,6 +8,7 @@ module Lockit.GitHub
     , lockIssue
 
     -- * Re-exports
+    , Id
     , Name
     , Owner
     , mkOwnerName
@@ -20,9 +22,16 @@ import GitHub.Data hiding (Issue(..))
 import Lockit.Time
 
 data Issue = Issue
-    { issueLocked :: Bool
+    { issueId :: Id Issue
+    , issueLocked :: Bool
     , issueClosedAt :: Maybe UTCTime
     }
+
+instance Eq Issue where
+    (==) = (==) `on` issueId
+
+mkIssueId :: Int -> Id Issue
+mkIssueId = mkId Proxy
 
 issueIsFresh :: UTCTime -> Issue -> Bool
 issueIsFresh cutoff issue

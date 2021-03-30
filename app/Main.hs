@@ -4,5 +4,11 @@ module Main
 
 import RIO
 
+import Lockit
+import Lockit.GitHub
+import Lockit.Time
+
 main :: IO ()
-main = runSimpleApp undefined
+main = runSimpleApp $ do
+    cutoff <- liftIO $ subtractDays (Days 30) <$> getCurrentTime
+    run (mkOwnerName "pbrisbin") (mkRepoName "aurget") cutoff

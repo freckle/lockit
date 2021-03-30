@@ -1,0 +1,35 @@
+name: lockit
+version: 0.0.0.0
+
+default-extensions:
+  - NoImplicitPrelude
+
+dependencies:
+  - base
+  - rio
+
+library:
+  source-dirs: src
+
+executables:
+  lockit:
+    main: Main.hs
+    source-dirs: app
+    dependencies:
+      - lockit
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+
+tests:
+  spec:
+    main: Spec.hs
+    source-dirs: test
+    dependencies:
+      - hspec
+      - lockit
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N

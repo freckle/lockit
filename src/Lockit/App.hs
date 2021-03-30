@@ -12,14 +12,18 @@ import GitHub
 import Lockit.GitHub
 import System.Environment
 
-newtype App = App
+data App = App
     { appGitHubAuth :: Auth
+    , appLogFunc :: LogFunc
     }
 
-loadApp :: IO App
-loadApp = do
+instance HasLogFunc App where
+    logFuncL = lens appLogFunc $ \x y -> x { appLogFunc = y }
+
+loadApp :: LogFunc -> IO App
+loadApp lf = do
     token <- getEnv "GITHUB_TOKEN"
-    pure App { appGitHubAuth = OAuth $ BS8.pack token }
+    pure App { appGitHubAuth = OAuth $ BS8.pack token, appLogFunc = lf }
 
 newtype AppT m a = AppT
     { unAppT :: ReaderT App m a

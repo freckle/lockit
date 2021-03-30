@@ -11,8 +11,11 @@ import Lockit.Time
 
 main :: IO ()
 main = do
-    app <- loadApp
+    lo <- logOptionsHandle stdout True
 
-    runAppT app $ do
-        cutoff <- liftIO $ subtractDays (Days 30) <$> getCurrentTime
-        run (mkOwnerName "pbrisbin") (mkRepoName "aurget") cutoff
+    withLogFunc lo $ \lf -> do
+        app <- loadApp lf
+
+        runAppT app $ do
+            cutoff <- liftIO $ subtractDays (Days 30) <$> getCurrentTime
+            run (mkOwnerName "pbrisbin") (mkRepoName "aurget") cutoff

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 58a88ff0506b2e97ce56408884719e6c1347992956ab5c0c8208ee6b6d2b3aa3
+-- hash: 6c17d3af3f81bf41b001a327afee606b05e6c5c5cea78e1e310d169be775857e
 
 name:           lockit
 version:        0.0.0.0
@@ -15,6 +15,7 @@ build-type:     Simple
 library
   exposed-modules:
       Lockit
+      Lockit.App
       Lockit.GitHub
       Lockit.Time
   other-modules:
@@ -24,6 +25,7 @@ library
   default-extensions: DerivingStrategies GeneralizedNewtypeDeriving NoImplicitPrelude OverloadedStrings
   build-depends:
       base
+    , bytestring
     , github
     , rio
   default-language: Haskell2010
